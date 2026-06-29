@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SketchUp 단축키 설명서</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; background: #f5f4f0; color: #1a1a18; min-height: 100vh; }
+
+  /* HEADER */
+  .hero { background: #2c2c2a; color: #f5f4f0; padding: 2.5rem 2rem 2rem; text-align: center; }
+  .hero-badge { display: inline-block; background: #3b6d11; color: #c0dd97; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem; text-transform: uppercase; }
+  .hero h1 { font-size: 2rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .hero p { font-size: 14px; color: #888780; }
+
+  /* SEARCH */
+  .search-wrap { max-width: 540px; margin: 1.5rem auto 0; position: relative; }
+  .search-wrap input { width: 100%; padding: 10px 16px 10px 40px; border-radius: 8px; border: 1px solid #444441; background: #3a3a38; color: #f5f4f0; font-size: 14px; outline: none; }
+  .search-wrap input::placeholder { color: #5f5e5a; }
+  .search-wrap input:focus { border-color: #639922; }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #5f5e5a; font-size: 16px; }
+
+  /* FILTER TABS */
+  .filter-wrap { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 1.25rem 1rem 0; }
+  .tab { padding: 6px 16px; border-radius: 20px; border: 0.5px solid #d3d1c7; background: #fff; color: #5f5e5a; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .tab:hover { border-color: #639922; color: #3b6d11; }
+  .tab.active { background: #3b6d11; color: #eaf3de; border-color: #3b6d11; }
+
+  /* MAIN GRID */
+  .main { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .section-title { font-size: 12px; font-weight: 500; color: #888780; letter-spacing: 0.1em; text-transform: uppercase; margin: 1.5rem 0 0.75rem; padding-left: 4px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+
+  /* SHORTCUT CARD */
+  .card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 12px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; transition: border-color 0.15s; }
+  .card:hover { border-color: #97c459; }
+  .card-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-name { font-size: 14px; font-weight: 500; color: #1a1a18; margin-bottom: 2px; }
+  .card-desc { font-size: 12px; color: #888780; line-height: 1.5; margin-bottom: 6px; }
+
+  /* KEY BADGES */
+  .keys { display: flex; flex-wrap: wrap; gap: 4px; }
+  .key { display: inline-flex; align-items: center; justify-content: center; background: #f1efe8; border: 0.5px solid #b4b2a9; border-bottom: 2px solid #888780; border-radius: 5px; padding: 2px 8px; font-size: 12px; font-weight: 500; color: #2c2c2a; font-family: 'Courier New', monospace; min-width: 28px; }
+  .key.plus { background: none; border: none; border-bottom: none; color: #888780; font-size: 11px; padding: 2px 2px; }
+
+  /* CATEGORY COLORS */
+  .icon-view   { background: #e6f1fb; }
+  .icon-draw   { background: #eaf3de; }
+  .icon-modify { background: #faeeda; }
+  .icon-select { background: #eeedfe; }
+  .icon-nav    { background: #e1f5ee; }
+  .icon-file   { background: #faece7; }
+
+  /* TIP BOX */
+  .tip { background: #eaf3de; border: 0.5px solid #97c459; border-radius: 10px; padding: 12px 16px; margin: 1.25rem 0; font-size: 13px; color: #27500a; display: flex; gap: 8px; }
+  .tip b { color: #3b6d11; }
+
+  /* HIDDEN */
+  .card.hidden { display: none; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; }
+    .hero { background: #2c2c2a !important; -webkit-print-color-adjust: exact; }
+    .filter-wrap, .search-wrap { display: none; }
+  }
+
+  @media (max-width: 500px) {
+    .hero h1 { font-size: 1.5rem; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">바오밥 목공학원 · AX 스마트 인테리어</div>
+  <h1>SketchUp 단축키 설명서</h1>
+  <p>자주 쓰는 단축키를 카테고리별로 정리했어요 · SketchUp 2022</p>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="단축키 또는 기능 검색... (예: 이동, M, 밀기)" oninput="filterCards()">
+  </div>
+</div>
+
+<div class="filter-wrap">
+  <button class="tab active" onclick="filterTab(this,'all')">전체</button>
+  <button class="tab" onclick="filterTab(this,'view')">보기·탐색</button>
+  <button class="tab" onclick="filterTab(this,'draw')">그리기</button>
+  <button class="tab" onclick="filterTab(this,'modify')">수정</button>
+  <button class="tab" onclick="filterTab(this,'select')">선택</button>
+  <button class="tab" onclick="filterTab(this,'file')">파일·저장</button>
+</div>
+
+<div class="main">
+
+  <div class="tip">
+    <span>💡</span>
+    <div><b>꿀팁:</b> 단축키는 <b>영문 입력 상태</b>에서만 작동해요! 한글로 바꾸면 안 먹히니까 작업 전 꼭 확인하세요.</div>
+  </div>
+
+  <!-- 선택 -->
+  <div class="section-title" data-cat="select">⬛ 선택</div>
+  <div class="cards" data-cat="select">
+
+    <div class="card" data-cat="select" data-search="선택 스페이스바 spacebar">
+      <div class="card-icon icon-select">🖱️</div>
+      <div class="card-body">
+        <div class="card-name">선택 도구</div>
+        <div class="card-desc">객체를 클릭해서 선택해요. 더블클릭하면 그룹 안으로 들어가요.</div>
+        <div class="keys"><span class="key">Space</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="select" data-search="전체선택 Ctrl A">
+      <div class="card-icon icon-select">🔲</div>
+      <div class="card-body">
+        <div class="card-name">전체 선택</div>
+        <div class="card-desc">화면의 모든 객체를 한 번에 선택해요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">A</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="select" data-search="선택해제 Ctrl D 선택 취소">
+      <div class="card-icon icon-select">❌</div>
+      <div class="card-body">
+        <div class="card-name">선택 해제</div>
+        <div class="card-desc">선택된 것을 모두 해제해요. 빈 공간 클릭해도 돼요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">D</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 그리기 -->
+  <div class="section-title" data-cat="draw">✏️ 그리기</div>
+  <div class="cards" data-cat="draw">
+
+    <div class="card" data-cat="draw" data-search="선 그리기 L Line">
+      <div class="card-icon icon-draw">📏</div>
+      <div class="card-body">
+        <div class="card-name">선 그리기</div>
+        <div class="card-desc">직선을 그려요. 숫자 입력 후 Enter로 정확한 길이 지정 가능!</div>
+        <div class="keys"><span class="key">L</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="draw" data-search="사각형 R Rectangle">
+      <div class="card-icon icon-draw">⬜</div>
+      <div class="card-body">
+        <div class="card-name">사각형 그리기</div>
+        <div class="card-desc">사각형을 그려요. "500,300" 입력하면 정확한 크기로 그려져요.</div>
+        <div class="keys"><span class="key">R</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="draw" data-search="원 C Circle">
+      <div class="card-icon icon-draw">⭕</div>
+      <div class="card-body">
+        <div class="card-name">원 그리기</div>
+        <div class="card-desc">원을 그려요. 반지름 숫자 입력 후 Enter.</div>
+        <div class="keys"><span class="key">C</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="draw" data-search="호 A Arc 곡선">
+      <div class="card-icon icon-draw">🌙</div>
+      <div class="card-body">
+        <div class="card-name">호(곡선) 그리기</div>
+        <div class="card-desc">곡선 형태의 호를 그려요. 창문 상단 아치 등에 활용!</div>
+        <div class="keys"><span class="key">A</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="draw" data-search="다각형 Polygon">
+      <div class="card-icon icon-draw">⬡</div>
+      <div class="card-body">
+        <div class="card-name">다각형 그리기</div>
+        <div class="card-desc">다각형을 그려요. 숫자로 면 개수 지정 가능.</div>
+        <div class="keys"><span class="key">Alt</span><span class="key plus">+</span><span class="key">P</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 수정 -->
+  <div class="section-title" data-cat="modify">🔧 수정</div>
+  <div class="cards" data-cat="modify">
+
+    <div class="card" data-cat="modify" data-search="밀기 당기기 Push Pull P">
+      <div class="card-icon icon-modify">📦</div>
+      <div class="card-body">
+        <div class="card-name">밀기/당기기 (Push/Pull)</div>
+        <div class="card-desc">면을 클릭하고 밀거나 당겨서 3D 형태로 만들어요. 목공 모델링의 핵심!</div>
+        <div class="keys"><span class="key">P</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="이동 M Move">
+      <div class="card-icon icon-modify">↔️</div>
+      <div class="card-body">
+        <div class="card-name">이동</div>
+        <div class="card-desc">선택한 객체를 옮겨요. Ctrl 누르면 복사+이동!</div>
+        <div class="keys"><span class="key">M</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="회전 Q Rotate">
+      <div class="card-icon icon-modify">🔄</div>
+      <div class="card-body">
+        <div class="card-name">회전</div>
+        <div class="card-desc">객체를 회전시켜요. 각도 숫자 입력 후 Enter로 정확하게!</div>
+        <div class="keys"><span class="key">Q</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="크기조절 S Scale">
+      <div class="card-icon icon-modify">📐</div>
+      <div class="card-body">
+        <div class="card-name">크기 조절</div>
+        <div class="card-desc">객체 크기를 늘리거나 줄여요.</div>
+        <div class="keys"><span class="key">S</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="간격띄우기 Offset F">
+      <div class="card-icon icon-modify">🔲</div>
+      <div class="card-body">
+        <div class="card-name">간격 띄우기 (Offset)</div>
+        <div class="card-desc">선택한 면이나 선에서 일정 간격 떨어진 복사본을 만들어요.</div>
+        <div class="keys"><span class="key">F</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="지우기 E Eraser 삭제">
+      <div class="card-icon icon-modify">🧹</div>
+      <div class="card-body">
+        <div class="card-name">지우기</div>
+        <div class="card-desc">선이나 면을 지워요. Shift+E는 부드러운 선 토글.</div>
+        <div class="keys"><span class="key">E</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="페인트 채우기 B 색상">
+      <div class="card-icon icon-modify">🎨</div>
+      <div class="card-body">
+        <div class="card-name">페인트 통 (재질 적용)</div>
+        <div class="card-desc">면에 재질이나 색상을 칠해요. 목재 텍스처 적용할 때 자주 써요.</div>
+        <div class="keys"><span class="key">B</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="치수 T 줄자 측정 가이드라인">
+      <div class="card-icon icon-modify">📏</div>
+      <div class="card-body">
+        <div class="card-name">줄자 / 가이드라인</div>
+        <div class="card-desc">거리를 측정하거나 가이드 선을 만들어요. 치수 확인에 필수!</div>
+        <div class="keys"><span class="key">T</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="실행취소 Ctrl Z 되돌리기">
+      <div class="card-icon icon-modify">↩️</div>
+      <div class="card-body">
+        <div class="card-name">실행 취소</div>
+        <div class="card-desc">방금 한 작업을 되돌려요. 실수했을 때 바로 눌러요!</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">Z</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="modify" data-search="다시실행 Ctrl Y 앞으로">
+      <div class="card-icon icon-modify">↪️</div>
+      <div class="card-body">
+        <div class="card-name">다시 실행</div>
+        <div class="card-desc">취소한 작업을 다시 해요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">Y</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 보기·탐색 -->
+  <div class="section-title" data-cat="view">👁️ 보기·탐색</div>
+  <div class="cards" data-cat="view">
+
+    <div class="card" data-cat="view" data-search="궤도 O Orbit 화면회전">
+      <div class="card-icon icon-view">🌐</div>
+      <div class="card-body">
+        <div class="card-name">화면 회전 (Orbit)</div>
+        <div class="card-desc">3D 화면을 돌려가며 볼 수 있어요. 마우스 휠 누른 채 드래그해도 돼요.</div>
+        <div class="keys"><span class="key">O</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="view" data-search="이동 H Pan 화면이동">
+      <div class="card-icon icon-view">✋</div>
+      <div class="card-body">
+        <div class="card-name">화면 이동 (Pan)</div>
+        <div class="card-desc">화면을 좌우상하로 이동해요. Shift+휠 드래그도 가능.</div>
+        <div class="keys"><span class="key">H</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="view" data-search="줌 Z Zoom 확대">
+      <div class="card-icon icon-view">🔍</div>
+      <div class="card-body">
+        <div class="card-name">확대/축소 (Zoom)</div>
+        <div class="card-desc">화면을 확대하거나 줄여요. 마우스 휠 스크롤이 더 편해요.</div>
+        <div class="keys"><span class="key">Z</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="view" data-search="전체보기 Ctrl Shift E 맞춤">
+      <div class="card-icon icon-view">🖼️</div>
+      <div class="card-body">
+        <div class="card-name">전체 화면에 맞추기</div>
+        <div class="card-desc">모든 객체가 화면에 딱 맞게 보이도록 자동으로 맞춰줘요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">Shift</span><span class="key plus">+</span><span class="key">E</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="view" data-search="선택항목보기 F5 Zoom Selection">
+      <div class="card-icon icon-view">🎯</div>
+      <div class="card-body">
+        <div class="card-name">선택 항목 확대</div>
+        <div class="card-desc">선택한 객체만 화면 가득 보여줘요.</div>
+        <div class="keys"><span class="key">F5</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="view" data-search="투시 평행 투영 camera">
+      <div class="card-icon icon-view">📷</div>
+      <div class="card-body">
+        <div class="card-name">투시/평행 투영 전환</div>
+        <div class="card-desc">원근감 있는 투시도 ↔ 정면도(직교) 전환. 도면 작업 시 평행으로!</div>
+        <div class="keys"><span class="key">Camera</span><span class="key plus">메뉴</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="view" data-search="X-Ray 투명 Alt Shift X 보이기">
+      <div class="card-icon icon-view">🩻</div>
+      <div class="card-body">
+        <div class="card-name">X-Ray 모드 (투명하게 보기)</div>
+        <div class="card-desc">모든 면이 투명하게 보여서 내부 구조 확인에 유용해요.</div>
+        <div class="keys"><span class="key">Alt</span><span class="key plus">+</span><span class="key">X</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 파일·저장 -->
+  <div class="section-title" data-cat="file">💾 파일·저장</div>
+  <div class="cards" data-cat="file">
+
+    <div class="card" data-cat="file" data-search="저장 Ctrl S Save">
+      <div class="card-icon icon-file">💾</div>
+      <div class="card-body">
+        <div class="card-name">저장</div>
+        <div class="card-desc">작업 내용을 저장해요. 자주 누르는 습관 필수!</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">S</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="file" data-search="다른이름저장 Ctrl Shift S">
+      <div class="card-icon icon-file">📂</div>
+      <div class="card-body">
+        <div class="card-name">다른 이름으로 저장</div>
+        <div class="card-desc">새 이름이나 다른 경로에 저장해요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">Shift</span><span class="key plus">+</span><span class="key">S</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="file" data-search="새파일 Ctrl N New">
+      <div class="card-icon icon-file">📄</div>
+      <div class="card-body">
+        <div class="card-name">새 파일</div>
+        <div class="card-desc">새 스케치업 파일을 열어요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">N</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="file" data-search="열기 Ctrl O Open">
+      <div class="card-icon icon-file">📁</div>
+      <div class="card-body">
+        <div class="card-name">파일 열기</div>
+        <div class="card-desc">기존 .skp 파일을 불러와요.</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">O</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-cat="file" data-search="인쇄 Ctrl P Print">
+      <div class="card-icon icon-file">🖨️</div>
+      <div class="card-body">
+        <div class="card-name">인쇄</div>
+        <div class="card-desc">현재 화면을 인쇄해요. PDF로 내보내기도 가능!</div>
+        <div class="keys"><span class="key">Ctrl</span><span class="key plus">+</span><span class="key">P</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 꿀팁 모음 -->
+  <div class="section-title">🍯 알면 편한 꿀팁</div>
+  <div class="tip">💡 <div><b>정확한 치수 입력:</b> 도구 선택 후 드래그하면서 숫자를 바로 타이핑하면 정확한 수치로 작업돼요. (예: 밀기/당기기 중 "2400" 입력 → 2400mm)</div></div>
+  <div class="tip">🔵 <div><b>색상 축으로 방향 잡기:</b> 빨강=X축, 초록=Y축, 파랑=Z축! 선이 해당 색으로 바뀌면 그 방향으로 이동 중이에요.</div></div>
+  <div class="tip">📦 <div><b>그룹 만들기:</b> 작업 완료 후 선택 → 오른쪽 클릭 → "그룹 만들기" 꼭 하세요! 안 하면 다른 객체랑 붙어버려요.</div></div>
+  <div class="tip">🖱️ <div><b>마우스 휠 활용:</b> 스크롤=줌 / 가운데 버튼 누른 채 드래그=Orbit / Shift+가운데 드래그=Pan</div></div>
+
+  <p style="text-align:center; font-size:12px; color:#b4b2a9; margin-top:2rem;">바오밥 목공학원 AX 스마트 인테리어 목수 양성과정 · SketchUp 2022 기준</p>
+</div>
+
+<script>
+let currentCat = 'all';
+
+function filterTab(el, cat) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentCat = cat;
+  filterCards();
+}
+
+function filterCards() {
+  const query = document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(card => {
+    const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
+    const searchMatch = !query || card.dataset.search.includes(query) || card.querySelector('.card-name').textContent.toLowerCase().includes(query);
+    card.classList.toggle('hidden', !(catMatch && searchMatch));
+  });
+
+  // 섹션 제목 숨기기
+  document.querySelectorAll('[data-cat]').forEach(el => {
+    if (el.classList.contains('section-title')) {
+      const cat = el.dataset.cat;
+      const cards = document.querySelectorAll(`.card[data-cat="${cat}"]:not(.hidden)`);
+      el.style.display = cards.length === 0 ? 'none' : '';
+    }
+  });
+}
+</script>
+</body>
+</html>
